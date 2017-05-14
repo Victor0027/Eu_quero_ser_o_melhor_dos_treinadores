@@ -1,3 +1,4 @@
+
 abstract class Pokemon
 {
 	String NomePoke;
@@ -13,6 +14,24 @@ abstract class Pokemon
 	String NoAtaque2;
 	String NoAtaque3;
 	String NoAtaque4;
+}
+class Blastoise extends Pokemon
+{
+	public Blastoise()
+	{
+		this.NomePoke="Blastoise";
+		this.HP=362.0;
+		this.Tipo=4;
+		this.Fraquesa=5;
+		this.NoAtaque1="Hydro Pump";
+		this.NoAtaque2="Aqua Tail";
+		this.NoAtaque3="Water Pulse";
+		this.NoAtaque4="Bubble";
+		this.Ataque1=110.0;
+		this.Ataque2=90.0;
+		this.Ataque3=60.0;
+		this.Ataque4=40.0;
+	}
 }
 class Dragonite extends Pokemon
 {
@@ -211,11 +230,7 @@ class Ash extends Treinador
 		}
 	public int ação(int j)
 	{
-		if(PokeVivos==1&&Vet[0].HP<50.0)
-		{
-			return 5;//Foge
-		}
-		else if(Vet[0].HP<100&&Vet[0].HP>0.0&&Vet[0].UsouCura==0)
+		if(Vet[0].HP<100&&Vet[0].HP>0.0&&Vet[0].UsouCura==0)
 		{
 			return 6;//Usa Cura
 		}
@@ -243,6 +258,44 @@ class Ash extends Treinador
 			}
 		}
 			
+	}
+}
+class Selvagem extends Treinador
+{
+	public Selvagem(int j){
+		this.NomeTreinador="Pokemon selvagem";
+		this.QuantPoke=1;
+		this.PokeVivos=1;
+		if(j==0){
+		this.Vet[0]=new Blastoise();
+		}
+		else if(j==1)
+		{
+			this.Vet[0]=new Gengar();
+		}
+		else
+		{
+			this.Vet[0]=new Gyarados();
+		}
+		}
+	public int ação(int j)
+	{
+		if(j==1)
+		{
+		    return 1;	
+		}
+		else if(j==2)
+		{
+			return 2;
+		}
+		else if(j==3)
+		{
+			return 3;
+		}
+		else
+		{
+			return 4;
+		}
 	}
 }
 class Trash extends Treinador
@@ -319,13 +372,24 @@ class Batalha{
 			{
 				t=true;
 			}
+			if(b==4)
+			{
+				t=true;
+			}
 		}
+		if(a.PokeVivos!=0)
+		{
 		System.out.println(a.NomeTreinador+": Volte "+a.Vet[0].NomePoke+"!!");
 		Pokemon aux=a.Vet[0];
 		a.Vet[0]=a.Vet[b];
 		a.Vet[b]=aux;
 		System.out.println(a.NomeTreinador+": Vá "+a.Vet[0].NomePoke+"!!");
 		return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	public boolean Ataque1(Treinador a,Treinador b)
 	{
@@ -371,7 +435,7 @@ class Batalha{
 	}
 	public boolean Ataque2(Treinador a,Treinador b)
 	{
-		int fator;//Sistema de fraquesa, fator que multiplica o ataque
+		int fator;
 		if(b.Vet[0].Fraquesa==a.Vet[0].Tipo)
 		{
 			fator=2;
@@ -413,7 +477,7 @@ class Batalha{
 	}
 	public boolean Ataque3(Treinador a,Treinador b)
 	{
-		int fator;//Sistema de fraquesa, fator que multiplica o ataque
+		int fator;
 		if(b.Vet[0].Fraquesa==a.Vet[0].Tipo)
 		{
 			fator=2;
@@ -455,7 +519,7 @@ class Batalha{
 	}
 	public boolean Ataque4(Treinador a,Treinador b)
 	{
-		int fator;//Sistema de fraquesa, fator que multiplica o ataque
+		int fator;
 		if(b.Vet[0].Fraquesa==a.Vet[0].Tipo)
 		{
 			fator=2;
@@ -495,8 +559,8 @@ class Batalha{
 			return false;
 		}
 	}
-	public String description(Treinador a, Treinador b){
-		return a.NomeTreinador +" inicia batalha com o "+b.NomeTreinador;
+	public String description(Ash a, Selvagem b){
+		return a.NomeTreinador +" inicia batalha com o "+b.NomeTreinador+" "+b.Vet[0].NomePoke;
 	}
 
 }
@@ -505,7 +569,7 @@ class action
 	public action()
 	{
 	}
-	public boolean AshAção(int j,Ash a,Trash b)
+	public boolean AshAção(int j,Ash a,Selvagem b)
 	{
 		boolean acabou;
 		int x=a.ação(j);
@@ -563,6 +627,29 @@ class action
 		}
 		return acabou;
 	}
+	public boolean SelvagemAção(int j,Ash a,Selvagem b)
+	{
+		boolean acabou;
+		int x=b.ação(j);
+		Batalha bat=new Batalha(a,b);
+		if(x==1)
+		{
+			acabou=bat.Ataque1(b,a);
+		}
+		else if(x==2)
+		{
+			acabou=bat.Ataque2(b,a);
+		}
+		else if(x==3)
+		{
+			acabou=bat.Ataque3(b,a);
+		}
+		else
+		{
+			acabou=bat.Ataque4(b,a);
+		}
+		return acabou;
+	}
 	public String vencedor(Ash a,Treinador b)
 	{
 		if(a.fugiu==true)
@@ -581,27 +668,27 @@ class action
 }
 public class Batalha_Pokemon
 {
-	public static void main(String[] args)
+	public Batalha_Pokemon()
+	{
+	}
+	public void Batalha(Ash Red,Selvagem Blue)
 	{
 		action act=new action();
 		int j=1;
 		int Turno=0;
-		Ash Red=new Ash();
-		Trash Blue=new Trash();
 		Batalha bat=new Batalha(Red, Blue);
 		System.out.println(bat.description(Red, Blue));
 		boolean acabou=false;
 		System.out.println(Red.NomeTreinador+": Vá "+Red.Vet[0].NomePoke+"!!");
-		System.out.println(Blue.NomeTreinador+": Vá "+Blue.Vet[0].NomePoke+"!!");
 		while(acabou==false)
 		{
-			if(Turno%2==0)
+			if(Turno%2==0&&Red.PokeVivos!=0)
 			{
 			    acabou=act.AshAção(j, Red, Blue);
 			}
 			else
 			{
-				acabou=act.TrashAção(j, Red, Blue);
+				acabou=act.SelvagemAção(j, Red, Blue);
 			}
 			j++;
 			j=j%5;
