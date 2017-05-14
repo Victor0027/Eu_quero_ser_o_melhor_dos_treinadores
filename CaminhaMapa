@@ -1,0 +1,66 @@
+
+import java.util.Random;
+
+public class CaminhaMapa {
+	public static void main(String[] args) {
+		Ash Red = new Ash();
+		Random x = new Random();
+		int SelecionaPoke=x.nextInt(3);//Seleciona o pokemon selvagem
+		Selvagem pokeSelvagem = new Selvagem(SelecionaPoke);
+		int[][] mapa = new int[5][5]; //1=grama 2=tatame, tatame não possui pokemons
+		boolean SeMoveu=false;//Verifica se o personagem se moveu
+		Batalha_Pokemon luta = new Batalha_Pokemon();
+		int posicaoX1,posicaoY1;
+		
+		for (int i=0; i<5;i++){
+			for (int j=0;j<5; j++){
+				mapa[i][j]=x.nextInt(2)+1;
+			}
+		}
+		mapa[0][0]=1;//Garante que tera ao menos um espaço de grama
+		posicaoX1= x.nextInt(5);
+		posicaoY1= x.nextInt(5);
+		
+		while(Red.PokeVivos!=0){
+			int proximo=x.nextInt(4);//0 baixo 1 esqueda 2 direita 3 cima
+			int Encontrou=x.nextInt(2);//Probabilidade de encontrar um pokemon
+			if(proximo==0&&posicaoY1!=4)
+			{
+				posicaoY1++;
+				System.out.println("Ash foi para baixo");
+				SeMoveu=true;
+			}
+			else if(proximo==1&&posicaoX1!=0)
+			{
+				posicaoX1--;
+				System.out.println("Ash foi para a esquerda");
+				SeMoveu=true;
+			}
+			else if(proximo==2&&posicaoX1!=4)
+			{
+				posicaoX1++;
+				System.out.println("Ash foi para a direita");
+				SeMoveu=true;
+			}
+			else if(proximo==3&&posicaoY1!=0)
+			{
+				posicaoY1--;
+				System.out.println("Ash foi para cima");
+				SeMoveu=true;
+			}
+			if(SeMoveu==true)
+			{
+				if(mapa[posicaoY1][posicaoX1]==1)
+				{
+					if(Encontrou==1)
+					{
+						luta.Batalha(Red, pokeSelvagem);
+					}
+				}
+			}
+			SeMoveu=false;
+			SelecionaPoke=x.nextInt(3);
+			pokeSelvagem=new Selvagem(SelecionaPoke);
+		}//fecha while
+	}//fecha main
+}//fecha classe
