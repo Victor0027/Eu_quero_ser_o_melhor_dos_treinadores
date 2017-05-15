@@ -208,6 +208,7 @@ class Mewtwo extends Pokemon
 }
 abstract class Treinador
 {
+	boolean fugiu;
 	String NomeTreinador;
 	int QuantPoke;
 	int PokeVivos;
@@ -265,6 +266,7 @@ class Selvagem extends Treinador
 	public Selvagem(int j){
 		this.NomeTreinador="Pokemon selvagem";
 		this.QuantPoke=1;
+		this.fugiu=false;
 		this.PokeVivos=1;
 		if(j==0){
 		this.Vet[0]=new Blastoise();
@@ -303,6 +305,7 @@ class Trash extends Treinador
 	public Trash(){
 		this.NomeTreinador="Trash";
 		this.QuantPoke=5;
+		this.fugiu=false;
 		this.PokeVivos=5;
 		this.Vet[0]=new Dragonite();
 		this.Vet[1]=new Gengar();
@@ -467,6 +470,7 @@ class Batalha{
 					t=true;
 				}
 			}
+			
 			System.out.println(b.NomeTreinador+": Volte "+b.Vet[0].NomePoke+"!!");
 			Pokemon aux=b.Vet[0];
 			b.Vet[0]=b.Vet[c];
@@ -559,7 +563,7 @@ class Batalha{
 			return false;
 		}
 	}
-	public String description(Ash a, Selvagem b){
+	public String description(Treinador a,Treinador b){
 		return a.NomeTreinador +" inicia batalha com o "+b.NomeTreinador+" "+b.Vet[0].NomePoke;
 	}
 
@@ -569,7 +573,7 @@ class action
 	public action()
 	{
 	}
-	public boolean AshAção(int j,Ash a,Selvagem b)
+	public boolean AshAção(int j,Ash a,Treinador b)
 	{
 		boolean acabou;
 		int x=a.ação(j);
@@ -604,7 +608,7 @@ class action
 		}
 		return acabou;
 	}
-	public boolean TrashAção(int j,Ash a,Trash b)
+	public boolean TrashAção(int j,Treinador a,Trash b)
 	{
 		boolean acabou;
 		int x=b.ação(j);
@@ -627,7 +631,7 @@ class action
 		}
 		return acabou;
 	}
-	public boolean SelvagemAção(int j,Ash a,Selvagem b)
+	public boolean SelvagemAção(int j,Treinador a,Selvagem b)
 	{
 		boolean acabou;
 		int x=b.ação(j);
@@ -650,7 +654,7 @@ class action
 		}
 		return acabou;
 	}
-	public String vencedor(Ash a,Treinador b)
+	public String vencedor(Treinador a,Treinador b)
 	{
 		if(a.fugiu==true)
 		{
@@ -689,6 +693,56 @@ public class Batalha_Pokemon
 			else
 			{
 				acabou=act.SelvagemAção(j, Red, Blue);
+			}
+			j++;
+			j=j%5;
+			Turno++;
+		}
+		System.out.println("O vencedor é "+act.vencedor(Red, Blue));
+	}
+	public void Batalha2(Trash Red,Selvagem Blue)
+	{
+		action act=new action();
+		int j=1;
+		int Turno=0;
+		Batalha bat=new Batalha(Red, Blue);
+		System.out.println(bat.description(Red, Blue));
+		boolean acabou=false;
+		System.out.println(Red.NomeTreinador+": Vá "+Red.Vet[0].NomePoke+"!!");
+		while(acabou==false)
+		{
+			if(Turno%2==0&&Red.PokeVivos!=0)
+			{
+			    acabou=act.TrashAção(j, Blue, Red);
+			}
+			else
+			{
+				acabou=act.SelvagemAção(j, Red, Blue);
+			}
+			j++;
+			j=j%5;
+			Turno++;
+		}
+		System.out.println("O vencedor é "+act.vencedor(Red, Blue));
+	}
+	public void Batalha3(Ash Red,Trash Blue)
+	{
+		action act=new action();
+		int j=1;
+		int Turno=0;
+		Batalha bat=new Batalha(Red, Blue);
+		System.out.println(bat.description(Red, Blue));
+		boolean acabou=false;
+		System.out.println(Red.NomeTreinador+": Vá "+Red.Vet[0].NomePoke+"!!");
+		while(acabou==false)
+		{
+			if(Turno%2==0&&Red.PokeVivos!=0)
+			{
+			    acabou=act.AshAção(j, Red, Blue);
+			}
+			else
+			{
+				acabou=act.TrashAção(j, Red, Blue);
 			}
 			j++;
 			j=j%5;
