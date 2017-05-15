@@ -96,6 +96,7 @@ public class CaminhaMapa {
 					if(encontrou1==1)
 					{
 						luta.Batalha(Red, pokeSelvagem);
+						pokeSelvagem=new Selvagem(SelecionaPoke);
 					}
 				}
 				if (mapa[posicaoY2][posicaoX2]==1)
