@@ -25,7 +25,7 @@ public class CaminhaMapa {
 		posicaoX2= x.nextInt(5);
 		posicaoY2= x.nextInt(5);
 		
-		while(Red.PokeVivos!=0 || Blue.PokeVivos!=0){
+		while(Red.PokeVivos!=0 && Blue.PokeVivos!=0){
 			int proximo1=x.nextInt(4);//0 baixo 1 esqueda 2 direita 3 cima
 			int proximo2=x.nextInt(4);
 			int encontrou1=x.nextInt(2);//Probabilidade de encontrar um pokemon
